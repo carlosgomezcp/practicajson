@@ -1,0 +1,71 @@
+<!DOCTYPE html><html><head><title>Cursos aprende a programar</title><meta charset="utf-8">
+ <style type="text/css">
+ *{font-family:sans-serif;} a:link {text-decoration:none;} select{font-size:18px;}
+ div div {color: blue; background-color:#F1FEC6; font-size: 20px; float:left; border: solid; margin: 20px; padding:15px;}
+ </style>
+ 
+<script>
+var cont=0;
+function mostrarSugerencia(str) {
+	
+var paisElegido='mexico';
+
+
+var xmlhttp;
+if (str.length==0 ||paisElegido=='none') { document.getElementById("txtInformacion").innerHTML="no hay datos";
+mostrarCiudades(); return; }
+xmlhttp=new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+	cont++;
+    var jsonResponse = xmlhttp.responseText;
+    var objeto_json = JSON.parse(jsonResponse);
+    var cotizacion=objeto_json.numcotizacion;
+    var paisesRecibidos = objeto_json.pcursor;
+    //var nuevaCadena = JSON.stringify(jsonResponse);
+	//alert(nuevaCadena);
+	var nombrePais = objeto_json.pcursor;
+    for (var i=0; i<nombrePais.length;i++) {
+    
+        //if (nombrePais==paisElegido) {
+        document.getElementById("txtInformacion").innerHTML = 'Generandose la Cotizacion  '+cont;
+        //var ciudadesPais = objeto_json.listadoPaises.pais[i].ciudadImportante;
+        //mostrarCiudades(ciudadesPais);
+        var nodoMostrarResultados = document.getElementById('listaCiudades');
+        var contenidosAMostrar = '';
+        contenidosAMostrar = contenidosAMostrar+'<div>';
+        contenidosAMostrar += '<a href="http://aprenderaprogramar.com">' +cotizacion+ '</a></div>';
+        contenidosAMostrar += '<br><div><a href="http://aprenderaprogramar.com">' +nombrePais[i]+ '</a></div>';
+         
+        nodoMostrarResultados.innerHTML = contenidosAMostrar;
+        }
+    //}
+    
+}
+}
+
+xmlhttp.open("POST","vehiculo.json?nocache=' + (new Date()).getTime()");
+xmlhttp.send();
+}
+/*
+function mostrarCiudades (arrayCiudades) {
+var nodoMostrarResultados = document.getElementById('listaCiudades');
+if (!arrayCiudades) {nodoMostrarResultados.innerHTML = ''; return}
+var contenidosAMostrar = '';
+for (var i=0; i<arrayCiudades.length;i++) {
+    contenidosAMostrar = contenidosAMostrar+'<div id="ciudades'+i+'">';
+    contenidosAMostrar += '<a href="http://aprenderaprogramar.com">' + arrayCiudades[i]+ '</a></div>';
+}
+if (contenidosAMostrar) {nodoMostrarResultados.innerHTML = contenidosAMostrar;}
+}*/
+</script></head>
+
+<body style="margin:20px;"><h2>Recorres Json:</h2>
+<form action="">
+
+<input type="button" name="boton" value="enviar" onclick="mostrarSugerencia('mexico')">
+</form>
+<br/>
+<p>Cotizacion No <span style="color:brown;" id="txtInformacion"></span></p>
+<div id="listaCiudades"> </div>
+</body></html>
